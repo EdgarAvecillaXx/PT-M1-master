@@ -1,8 +1,5 @@
 "use strict";
 
-const ConsoleLogger = require("@11ty/eleventy/src/Util/ConsoleLogger");
-const { isString, has } = require("markdown-it/lib/common/utils");
-
 /*
 Implementar la clase LinkedList, definiendo los siguientes métodos:
   - add: agrega un nuevo nodo al final de la lista;
