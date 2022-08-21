@@ -1,5 +1,8 @@
 "use strict";
 
+const ConsoleLogger = require("@11ty/eleventy/src/Util/ConsoleLogger");
+const { isString, has } = require("markdown-it/lib/common/utils");
+
 /*
 Implementar la clase LinkedList, definiendo los siguientes métodos:
   - add: agrega un nuevo nodo al final de la lista;
@@ -11,9 +14,63 @@ Implementar la clase LinkedList, definiendo los siguientes métodos:
   En caso de que la búsqueda no arroje resultados, search debe retornar null.
 */
 
-function LinkedList() {}
+function Node(value) {
+  this.value = value;
+  this.next = null;
+}
 
-function Node(value) {}
+function LinkedList() {
+  this.head = null;
+  this.len = 0;
+}
+
+LinkedList.prototype.add = function (data) {
+  let node = new Node(data);
+  let current = this.head;
+  if (!current) {
+    this.head = node;
+  } else {
+    while (current.next) {
+      current = current.next;
+    }
+    current.next = node;
+  }
+  this.len++;
+};
+
+LinkedList.prototype.remove = function () {
+  let pointer = this.head;
+  let removed;
+  if (this.len === 0) return null;
+  if (this.len === 1) {
+    this.head = null;
+    removed = pointer.value;
+  } else {
+    while (pointer.next.next) {
+      pointer = pointer.next;
+    }
+    removed = pointer.next.value;
+    pointer.next = null;
+  }
+  this.len--;
+  return removed;
+  //sacar ultimo nodo y mostrar valor;
+};
+
+LinkedList.prototype.search = function (value) {
+  if (this.head == null) return null;
+  let current = this.head;
+  while (current) {
+    if (current.value === value) {
+      return current.value;
+    } else if (typeof value === "function") {
+      if (value(current.value)) return current.value;
+    }
+    current = current.next;
+  }
+
+  return null;
+};
 
 /*
 Implementar la clase HashTable.
@@ -30,7 +87,42 @@ La clase debe tener los siguientes métodos:
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
 
-function HashTable() {}
+function HashTable() {
+  this.numBuckets = 35;
+  this._AvalaibleBuckets = 0;
+  this.buckets = [];
+}
+
+HashTable.prototype.hash = function (key) {
+  if (typeof key !== "string") throw new TypeError("Key must be strings");
+  let uCode = 0;
+  for (let i = 0; i < key.length; i++) {
+    uCode += key.charCodeAt(i);
+  }
+  return uCode % this.numBuckets;
+};
+
+HashTable.prototype.set = function (key, value) {
+  if (this._AvalaibleBuckets === this.numBuckets)
+    throw "Error!, The maximum number of values has ben registered";
+  let pos = this.hash(key);
+  if (this.buckets[pos] === undefined) this.buckets[pos] = {};
+  this.buckets[pos][key] = value;
+  this._AvalaibleBuckets++;
+};
+
+HashTable.prototype.get = function (key) {
+  let pos = this.hash(key);
+  return this.buckets[pos][key];
+};
+
+HashTable.prototype.hasKey = function (key) {
+  let pos = this.hash(key);
+  return Object.hasOwn(this.buckets[pos], key);
+};
+
+
+
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
