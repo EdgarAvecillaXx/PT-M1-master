@@ -17,9 +17,11 @@ Como ejercicio adicional y completamente opcional, al terminar de resolver este 
 */
 
 function nFactorial(n) {
-  parseInt(n);
+  n = parseInt(n);
+  if (!Number.isInteger(n))
+    throw "Error! nFactorial must receive an integer number";
   if (n < 0) throw "Error! Factorial for negative numbers does not exist";
-  return n <= 1 ? n : n * nFactorial(n - 1);
+  return n <= 2 ? n : n * nFactorial(n - 1);
 }
 
 // fn = fn-1 + fn-2;
@@ -97,6 +99,20 @@ class Queue {
     return this.len;
   }
 }
+
+function Queue() {
+  this.arr = [];
+  this.enqueue = function (data) {
+    this.arr.push(data);
+  };
+}
+
+Queue.prototype.dequeue = function () {
+  return this.arr.shift();
+};
+Queue.prototype.size = function () {
+  return this.arr.length;
+};
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
