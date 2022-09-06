@@ -11,11 +11,18 @@ Se acuerdan como factoreaban números en la escuela? Hagamos un algoritmo para e
 - ¿Funciona bien? Comparen con los resultados de sus compañeros.
 - ¿Qué complejidad tiene el algoritmo que escribieron? ¿Lo pueden mejorar?
 
+// num % factor === 0 lo repetimos, anotamos el factor; 
+// factor++; 
+// factor % factor === 0, no puede ser divisible entre otro numero
+// medir tiempo;
+//calculo complejidad
+
 ## BubbleSort
 
 - Implementar el algoritmo BubbleSort.
 - Agregen funcionalidad para poder medir el tiempo que tarda en ordenar.
 - ¿Como podemos reducir el tiempo? Buscar mejoras de BubbleSort.
+
 
 ## InsertionSort
 

@@ -34,18 +34,18 @@ describe('countProps', () => {
         expect(countProps(objeto)).toBe(4)
     })
 
-    it('debe determinar la cantidad correcta de propiedades de un objeto, incluso con objetos aninados dentro del primero', () => {
-        const objeto = {
-            a: {
-                a1: 10,
-                a2: 'Franco',
-                a3: {f: 'r', a: 'n', c: {o: true}}
-            },
-            b: 2,
-            c: [1, {a: 1}, 'Franco']
-            }
-        expect(countProps(objeto)).toBe(10)
-    })
+    it("debe determinar la cantidad correcta de propiedades de un objeto, incluso con objetos aninados dentro del primero", () => {
+      const objeto = {
+        a: {
+          a1: 10,
+          a2: "Franco",
+          a3: { f: "r", a: "n", c: { o: true } },
+        },
+        b: 2,
+        c: [1, { a: 1 }, "Franco"],
+      };
+      expect(countProps(objeto)).toBe(10);
+    });
 })
 
 describe('changeNotNumbers', () =>{

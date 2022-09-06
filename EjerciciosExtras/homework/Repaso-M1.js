@@ -14,11 +14,14 @@ const {
 // Pista: utilizar el método Array.isArray() para determinar si algun elemento de array es un array anidado
 // [Para más información del método: https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/isArray]
 
-var countArray = function(array) {
-    // Tu código aca:
-    
-}
-
+var countArray = function (array) {
+  // Tu código aca:
+  const suma = array.reduce((acc, value) => {
+    Array.isArray(value) ? (acc += countArray(value)) : (acc += value);
+    return acc;
+  });
+  return suma;
+};
 
 // Implementar la función countProps: a partir de un objeto en el cual cada propiedad puede contener
 // cualquier tipo de dato, determinar la cantidad de propiedades de objetos en cualquier nivel, ya sea el inicial
@@ -37,11 +40,15 @@ var countArray = function(array) {
 // dentro de a tenemos 3 propiedades mas, luego a3 tiene otras 3 y por ultimo c tiene una extra.
 // Propiedades: a, a1, a2, a3, f, a, c, o, b, c --> 10 en total
 
-var countProps = function(obj) {
-    // Tu código aca:
-
-}
-
+var countProps = function (obj) {
+  // Tu código aca:
+  let counter = Object.keys(obj).length;
+  for (const i in obj) {
+    if (typeof obj[i] === "object" && !Array.isArray(obj[i]))
+      counter += countProps(obj[i]);
+  }
+  return counter;
+};
 
 // Implementar el método changeNotNumbers dentro del prototype de LinkedList que deberá cambiar
 // aquellos valores que no puedan castearse a numeros por 'Kiricocho' y devolver la cantidad de cambios que hizo
@@ -51,11 +58,19 @@ var countProps = function(obj) {
 //    lista.changeNotNumbers();
 //    Ahora la lista quedaría: Head --> [1] --> ['2'] --> [false] --> ['Kirikocho] y la función debería haber devuelto el valor 1
 
-LinkedList.prototype.changeNotNumbers = function(){
-    // Tu código aca:
-
-}
-
+LinkedList.prototype.changeNotNumbers = function () {
+  // Tu código aca:
+  let current = this.head;
+  let counter = 0;
+  while (current !== null) {
+    if (isNaN(+current.value)) {
+      current.value = "Kiricocho";
+      counter++;
+    }
+    current = current.next;
+  }
+  return counter;
+};
 
 // Implementar la función mergeQueues que a partir de dos queues recibidas por parametro
 // debe devolver una nueva Queue que vaya mergeando los nodos de las anteriores.
@@ -65,32 +80,42 @@ LinkedList.prototype.changeNotNumbers = function(){
 // mergeQueues(queueOne, queueTwo) --> [7,2,3,4,5,6]
 // IMPORTANTE: NO son arreglos sino que son Queues.
 
-var mergeQueues = function(queueOne, queueTwo) {
-    // Tu código aca:
-
-}
-
+var mergeQueues = function (queueOne, queueTwo) {
+  // Tu código aca:
+  const mergedQueue = new Queue();
+  while (queueOne.size() || queueTwo.size()) {
+    if (queueOne.size()) mergedQueue.enqueue(queueOne.dequeue());
+    if (queueTwo.size()) mergedQueue.enqueue(queueTwo.dequeue());
+  }
+  return mergedQueue;
+};
 
 // Implementar la funcion closureMult que permita generar nuevas funciones que representen
 // las tablas de multiplicación de distintos numeros
-// Ejemplo: 
+// Ejemplo:
 // - var multByFour = closureMult(4);
 // - multByFour(2) --> 8 (2 * 4)
 // - multByFour(5) --> 20
 // - var multBySix = closureMult(6);
 // - multBySix(4) --> 24
 
-var closureMult = function(multiplier) {
-    // Tu código aca:
+var closureMult = function (multiplier) {
+  // Tu código aca:
 
-}
+  return (value) => {
+    return multiplier * value;
+  };
+};
 
 // Implementar el método sum dentro del prototype de BinarySearchTree
 // que debe retornar la suma total de los valores dentro de cada nodo del arbol
-BinarySearchTree.prototype.sum = function() {
-    // Tu código aca:
-
-}
+BinarySearchTree.prototype.sum = function () {
+  // Tu código aca:
+  let counter = this.value;
+  counter += this.left ? this.left.sum() : 0;
+  counter += this.right ? this.right.sum() : 0;
+  return counter;
+};
 
 module.exports = {
     countArray,

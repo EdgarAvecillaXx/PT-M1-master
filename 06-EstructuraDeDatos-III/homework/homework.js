@@ -22,21 +22,23 @@ class BinarySearchTree {
 
   //Metodo size : returna #nodos
   size() {
-    return this.counter;
+    let size = 1;
+    if (this.size === null) size === 0;
+    if (this.left === null && this.right === null) size = 1;
+    if (this.left === null && this.right !== null) size += this.right.size();
+    if (this.left !== null && this.right === null) size += this.left.size();
+    if (this.left !== null && this.right !== null)
+      size += this.right.size() + this.left.size();
+    return size;
   }
 
   //Metodo insert: agrega un nodo al arbol
-  insert(value, tree) {
+  insert(value, tree = this) {
     const node = new BinarySearchTree(value);
-    if (!tree) tree = this;
-    if (this.value === null) {
-      this.root = node;
-    } else if (value < this.value) {
-      !this.left ? (this.left = node) : this.left.insert(value, tree);
-    } else if (value >= this.value) {
-      !this.right ? (this.right = node) : this.right.insert(value, tree);
-    }
-    this.counter++;
+    if (value < this.value)
+      this.left ? this.left.insert(value, tree) : (this.left = node);
+    if (value >= this.value)
+      this.right ? this.right.insert(value, tree) : (this.right = node);
   }
 
   //Metodo contains: retorna true o false si existe el valor
@@ -50,39 +52,40 @@ class BinarySearchTree {
   }
 
   //Metodo depth: itera el arbol en orden DFS(post/pre/in-order), inorder por default
-  depthFirstForEach(values, value) {
-    if (value === "pre-order") {
+  depthFirstForEach(cb, value) {
+    switch (value) {
       //pre-order -> Parent, left, right
-      values(this.value);
-      if (this.left) this.left.depthFirstForEach(values, value);
-      if (this.right) this.right.depthFirstForEach(values, value);
-    } else if (value === "post-order") {
+      case "pre-order":
+        cb(this.value);
+        this.left?.depthFirstForEach(values, value);
+        this.right?.depthFirstForEach(values, value);
+        break;
       //post-order -> left, right, parent
-      if (this.left) this.left.depthFirstForEach(values, value);
-      if (this.right) this.right.depthFirstForEach(values, value);
-      values(this.value);
-    } else {
+      case "post-order":
+        this.left?.depthFirstForEach(values, value);
+        this.right?.depthFirstForEach(values, value);
+        cb(this.value);
+        break;
       //in-order -> left, Parent, right
-      if (this.left) this.left.depthFirstForEach(values, value);
-      values(this.value);
-      if (this.right) this.right.depthFirstForEach(values, value);
+      default:
+        this.left?.depthFirstForEach(values, value);
+        cb(this.value);
+        this.right?.depthFirstForEach(values, value);
+        break;
     }
   }
 
   //Metodo breadth: itera en orden BFS
-  breadthFirstForEach(values) {
-    const tree = [this];
-    let pointer;
-
-    while (tree.length) {
-      pointer = tree.shift();
-      values(pointer.value);
-
-      if (pointer.left) tree.push(pointer.left);
-      if (pointer.right) tree.push(pointer.right);
+  breadthFirstForEach(cb, tree = []) {
+    if (this.left) tree.push(this.left);
+    if (this.right) tree.push(this.right);
+    cb(this.value);
+    if (tree.length) {
+      tree.shift().breadthFirstForEach(values, tree);
     }
   }
 }
+
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
